@@ -23,6 +23,11 @@ pipeline {
             | sed s/"namespace: core-demo"/"namespace: ${BRANCH_NAME}"/\
             | kubectl apply -n ${BRANCH_NAME} -f -
           """
+          sh """
+          kubectl get secret mm-secrets -n core-demo -o yaml \
+            | sed s/"namespace: core-demo"/"namespace: ${BRANCH_NAME}"/\
+            | kubectl apply -n ${BRANCH_NAME} -f -
+          """     
           sh "kubectl -n ${BRANCH_NAME} apply -f k8s/mm.yml"
         }
         echo "preparing Jenkins CLI"
