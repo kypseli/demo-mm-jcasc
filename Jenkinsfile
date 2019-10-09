@@ -17,12 +17,7 @@ pipeline {
       steps {
         echo "setting up K8s objects"
         sh("sed -i 's#BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
-        container('kubectl') {
-          sh """
-          kubectl get secret mm-secrets -n core-demo -o yaml \
-            | sed s/"namespace: core-demo"/"namespace: ${BRANCH_NAME}"/\
-            | kubectl apply -n ${BRANCH_NAME} -f -
-          """     
+        container('kubectl') {   
           sh "kubectl -n ${BRANCH_NAME} apply -f k8s/mm.yml"
         }
         echo "preparing Jenkins CLI"
