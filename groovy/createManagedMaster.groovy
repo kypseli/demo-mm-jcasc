@@ -18,7 +18,7 @@ import com.cloudbees.opscenter.server.properties.ConnectedMasterLicenseServerPro
 import com.cloudbees.opscenter.server.model.OperationsCenter
 
 
-String masterName = "test"
+String masterName = "BRANCH_NAME"
 
 if(OperationsCenter.getInstance().getConnectedMasters().any { it?.getName()==masterName }) {
     println "Master with this name already exists."
@@ -41,7 +41,7 @@ Map props = [
 //    livenessPeriodSeconds: 10, //Integer
 //    livenessTimeoutSeconds: 10, //Integer
       memory: 3060, //Integer
-      namespace: "cloud-run", //String
+      namespace: "BRANCH_NAME", //String
 //    ratio: 0.7, //Double
       storageClassName: "ssd", //String
 //    systemProperties:"", //String
@@ -69,7 +69,7 @@ spec:
           - name: SECRETS
             value: /var/jenkins_home/mm-secrets
           - name: CASC_JENKINS_CONFIG
-            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/master/jcasc.yml
+            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/BRANCH_NAME/jcasc.yml
         volumeMounts:
         - name: mm-secrets
           mountPath: /var/jenkins_home/mm-secrets
