@@ -8,6 +8,11 @@ kind: ServiceAccount
 metadata:
   name: REPLACE_BRANCH_NAME
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins
+---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -38,7 +43,7 @@ roleRef:
   name: cjoc-agents
 subjects:
 - kind: ServiceAccount
-  name: REPLACE_BRANCH_NAME
+  name: jenkins
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
