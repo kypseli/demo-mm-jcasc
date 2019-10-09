@@ -8,11 +8,11 @@ jenkins:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: "k8s-core-demo-jenkins-sa"
+      credentialsId: "k8s-cloud-run-sa"
       defaultsProviderTemplate: "default-jnlp"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
-      namespace: "core-demo"
+      namespace: "cloud-run"
       readTimeout: 15
       serverCertificate: |-
         ${core-workshop-cert}
@@ -236,6 +236,11 @@ credentials:
           name: "github.com"
           description: "GitHub"
         credentials:
+          - string:
+              scope: GLOBAL
+              id: k8s-cloud-run-sa
+              description: "k8s-cloud-run-sa"
+              secret: ${k8s-cloud-run-sa}
           - string:
               scope: GLOBAL
               id: cbdays-github-token-secret
