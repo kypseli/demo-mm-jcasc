@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'master' }
+  agent { label 'default-jnlp' }
   stages {
     stage('reload jcasc') {
       steps {
