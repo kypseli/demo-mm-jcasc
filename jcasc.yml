@@ -109,6 +109,15 @@ unclassified:
               credentialsId: "cbdays-github-token"
               repoOwner: "cloudbees-days"
               repository: "pipeline-library"
+    - defaultVersion: "master"
+      name: "kypseli"
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              credentialsId: "cbdays-github-token"
+              repoOwner: "kypseli"
+              repository: "pipeline-library"
 kube:
   podTemplatesConfiguration:
     templates:
