@@ -33,7 +33,7 @@ Map props = [
 //    domain: "test-custom-domain-1", //String
 //    envVars: "", //String
       fsGroup: "1000", //String
-//    image: "custom-image-name", //String -- set this up in Operations Center Docker Image configuration
+      image: "CloudBees Official", //String -- set this up in Operations Center Docker Image configuration
       javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false ", //String
 //    jenkinsOptions:"", //String
 //    kubernetesInternalDomain: "cluster.local", //String
