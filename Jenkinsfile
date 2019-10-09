@@ -16,7 +16,7 @@ pipeline {
     stage('Create Managed Master from Groovy') {
       steps {
         echo "setting up K8s objects"
-        sh("sed -i 's#BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
+        sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
         container('kubectl') {   
           sh "kubectl -n ${BRANCH_NAME} apply -f k8s/mm.yml"
         }
