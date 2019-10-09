@@ -16,7 +16,7 @@ pipeline {
     stage('Create Managed Master from Groovy') {
       steps {
         echo "setting up K8s objects"
-        sh("sed -i 's#BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
+        sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
         container('kubectl') {
           sh """
           kubectl get configmap jenkins-agent -n core-demo -o yaml \
@@ -32,7 +32,7 @@ pipeline {
         }
         echo "preparing Jenkins CLI"
         sh 'curl -O http://cjoc/cjoc/jnlpJars/jenkins-cli.jar'
-        sh("sed -i 's#BRANCH_NAME#${BRANCH_NAME}#' groovy/createManagedMaster.groovy")
+        sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' groovy/createManagedMaster.groovy")
         withCredentials([usernamePassword(credentialsId: 'cli-username-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh """
             alias cli='java -jar jenkins-cli.jar -s \'http://cjoc/cjoc/\' -auth $USERNAME:$PASSWORD'
