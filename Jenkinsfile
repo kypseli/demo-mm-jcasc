@@ -12,7 +12,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'cli-username-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh """
             alias cli='java -jar jenkins-cli.jar -s \'http://cjoc/cjoc/\' -auth $USERNAME:$PASSWORD'
-            cli groovy = < groovy-scripts/createManagedMaster.groovy
+            cli groovy = < groovy/createManagedMaster.groovy
           """
         }
       }
