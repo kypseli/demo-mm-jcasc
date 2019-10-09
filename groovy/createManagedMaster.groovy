@@ -32,7 +32,7 @@ Map props = [
       disk: 50, //Integer //
 //    domain: "test-custom-domain-1", //String
 //    envVars: "", //String
-//    fsGroup: "1000", //String
+      fsGroup: "1000", //String
 //    image: "custom-image-name", //String -- set this up in Operations Center Docker Image configuration
       javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false ", //String
 //    jenkinsOptions:"", //String
@@ -41,13 +41,13 @@ Map props = [
 //    livenessPeriodSeconds: 10, //Integer
 //    livenessTimeoutSeconds: 10, //Integer
       memory: 3060, //Integer
-//    namespace: null, //String
+      namespace: "cloud-run", //String
       nodeSelectors: type=master, //String
 //    ratio: 0.7, //Double
-//    storageClassName: null, //String
+      storageClassName: "ssd", //String
 //    systemProperties:"", //String
 //    terminationGracePeriodSeconds: 1200, //Integer
-//    yaml:"" //String
+      yaml:"--- kind: Ingress metadata: annotations: kubernetes.io/ingress.class: "nginx" --- kind: StatefulSet spec: template: metadata: annotations: cluster-autoscaler.kubernetes.io/safe-to-evict: "false" spec: containers: - name: jenkins env: # With the help of SECRETS environment variable # we point Jenkins Configuration as Code plugin the location of the secrets - name: SECRETS value: /var/jenkins_home/mm-secrets - name: CASC_JENKINS_CONFIG value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/master/jcasc.yml volumeMounts: - name: mm-secrets mountPath: /var/jenkins_home/mm-secrets readOnly: true volumes: - name: mm-secrets secret: secretName: mm-secrets nodeSelector: type: master securityContext: runAsUser: 1000 fsGroup: 1000" //String
 ]
 
 def configuration = new KubernetesMasterProvisioning()
