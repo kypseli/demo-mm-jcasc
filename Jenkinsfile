@@ -27,7 +27,7 @@ pipeline {
           sh """
             alias cli='java -jar jenkins-cli.jar -s \'http://cjoc/cjoc/\' -auth $USERNAME:$PASSWORD'
             cli groovy = < groovy/createManagedMaster.groovy
-            alias cli='java -jar jenkins-cli.jar -s \'http://${BRANCH_NAME}.core-demo.svc.cluster.local/${BRANCH_NAME}/\' -auth $USERNAME:$PASSWORD'
+            alias cli='java -jar jenkins-cli.jar -s \'http://${BRANCH_NAME}.${BRANCH_NAME}.svc.cluster.local/${BRANCH_NAME}/\' -auth $USERNAME:$PASSWORD'
             cli reload-jcasc-configuration
           """
         }
