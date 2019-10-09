@@ -8,7 +8,7 @@ jenkins:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: "k8s-jenkins-sa"
+      credentialsId: "k8s-core-demo-jenkins-sa"
       defaultsProviderTemplate: "default-jnlp"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
@@ -236,11 +236,6 @@ credentials:
           name: "github.com"
           description: "GitHub"
         credentials:
-          - string:
-              scope: GLOBAL
-              id: k8s-jenkins-sa
-              description: "jenkins SA token"
-              secret: ${k8s-jenkins-sa}
           - string:
               scope: GLOBAL
               id: cbdays-github-token-secret
