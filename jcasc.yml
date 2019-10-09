@@ -12,7 +12,7 @@ jenkins:
       defaultsProviderTemplate: "default-jnlp"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
-      namespace: "cje"
+      namespace: "core-demo"
       readTimeout: 15
       serverCertificate: |-
         ${core-workshop-cert}
