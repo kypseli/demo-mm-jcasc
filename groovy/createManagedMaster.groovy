@@ -42,7 +42,6 @@ Map props = [
 //    livenessTimeoutSeconds: 10, //Integer
       memory: 3060, //Integer
       namespace: "cloud-run", //String
-      nodeSelectors: type=master, //String
 //    ratio: 0.7, //Double
       storageClassName: "ssd", //String
 //    systemProperties:"", //String
