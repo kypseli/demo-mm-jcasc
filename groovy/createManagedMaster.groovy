@@ -47,19 +47,44 @@ Map props = [
       storageClassName: "ssd", //String
 //    systemProperties:"", //String
 //    terminationGracePeriodSeconds: 1200, //Integer
-      yaml:"---\nkind: Ingress\nmetadata:\n  annotations:\n    kubernetes.io/ingress.class:\
-      \ \"nginx\"\n    \n---\nkind: StatefulSet\nspec:\n  template:\n    metadata:\n\
-      \      annotations:\n          cluster-autoscaler.kubernetes.io/safe-to-evict:\
-      \ \"false\"\n    spec:\n      containers:\n      - name: jenkins\n        env:\n\
-      \          # With the help of SECRETS environment variable\n          # we point\
-      \ Jenkins Configuration as Code plugin the location of the secrets\n       \
-      \   - name: SECRETS\n            value: /var/jenkins_home/mm-secrets\n     \
-      \     - name: CASC_JENKINS_CONFIG\n            value: https://raw.githubusercontent.com/kypseli/workshop-mm-jcasc/master/jcasc.yml\n\
-      \        volumeMounts:\n        - name: mm-secrets\n          mountPath: /var/jenkins_home/mm-secrets\n\
-      \          readOnly: true\n      volumes:\n      - name: mm-secrets\n      \
-      \  secret:\n          secretName: mm-secrets\n      nodeSelector:\n        type:\
-      \ master\n      securityContext:\n        runAsUser: 1000\n        fsGroup:\
-      \ 1000\n" //String
+      yaml:"""
+---
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    
+---
+kind: StatefulSet
+spec:
+  template:
+    metadata:
+      annotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+    spec:
+      containers:
+      - name: jenkins
+        env:
+          # With the help of SECRETS environment variable
+          # we point Jenkins Configuration as Code plugin the location of the secrets
+          - name: SECRETS
+            value: /var/jenkins_home/mm-secrets
+          - name: CASC_JENKINS_CONFIG
+            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/master/jcasc.yml
+        volumeMounts:
+        - name: mm-secrets
+          mountPath: /var/jenkins_home/mm-secrets
+          readOnly: true
+      volumes:
+      - name: mm-secrets
+        secret:
+          secretName: mm-secrets
+      nodeSelector:
+        type: master
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000  
+      """
 ]
 
 def configuration = new KubernetesMasterProvisioning()
