@@ -19,7 +19,7 @@ pipeline {
         sh("sed -i 's#BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
         container('kubectl') {
           sh """
-          kubectl get secret jenkins-agent -n core-demo -o yaml \
+          kubectl get configmap jenkins-agent -n core-demo -o yaml \
             | sed s/"namespace: core-demo"/"namespace: ${BRANCH_NAME}"/\
             | kubectl apply -n ${BRANCH_NAME} -f -
           """
