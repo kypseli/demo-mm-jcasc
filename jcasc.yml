@@ -91,15 +91,6 @@ jenkins:
       disableSyntaxHighlighting: true
   numExecutors: 0
 unclassified:
-  gitlabconnectionconfig:
-    connections:
-      - apiTokenId: gitlab-beedemo-dev-token
-        clientBuilderId: "autodetect"
-        connectionTimeout: 20
-        ignoreCertificateErrors: true
-        name: "gitlab.com"
-        readTimeout: 10
-        url: "https://gitlab.com/"
   githubpluginconfig:
     configs:
     - name: "GitHub - CloudBees Days"
@@ -238,61 +229,6 @@ kube:
         spec:
           securityContext:
             runAsUser: 1000
-jobs:
-  - script: >
-      organizationFolder('dev/beedemo-helloworld') {
-          description("GitLab org folder created with Job DSL")
-          displayName('beedemo-helloworld - GitLab Group Folder')
-          // "Projects"
-          organizations {
-              gitLabSCMNavigator {
-                  projectOwner("beedemo-helloworld")
-                  credentialsId("gitlab-beedemo-dev-token")
-                  serverName("gitlab-3214")
-                  // "Traits" ("Behaviours" in the GUI) that are "declarative-compatible"
-                  traits {
-                      subGroupProjectDiscoveryTrait() // discover projects inside subgroups
-                      gitLabBranchDiscovery {
-                          strategyId(3) // discover all branches
-                      }
-                      originMergeRequestDiscoveryTrait {
-                          strategyId(1) // discover MRs and merge them with target branch
-                      }
-                      gitLabTagDiscovery() // discover tags
-                  }
-              }
-          }
-          // "Traits" ("Behaviours" in the GUI) that are NOT "declarative-compatible"
-          // For some 'traits, we need to configure this stuff by hand until JobDSL handles it
-          // https://issues.jenkins.io/browse/JENKINS-45504
-          configure {
-              def traits = it / navigators / 'io.jenkins.plugins.gitlabbranchsource.GitLabSCMNavigator' / traits
-              traits << 'io.jenkins.plugins.gitlabbranchsource.ForkMergeRequestDiscoveryTrait' {
-                  strategyId(2)
-                  trust(class: 'io.jenkins.plugins.gitlabbranchsource.ForkMergeRequestDiscoveryTrait$TrustPermission')
-              }
-          }
-          // "Project Recognizers"
-          projectFactories {
-              workflowMultiBranchProjectFactory {
-                  scriptPath 'Jenkinsfile'
-              }
-          }
-          // "Orphaned Item Strategy"
-          orphanedItemStrategy {
-              discardOldItems {
-                  daysToKeep(10)
-                  numToKeep(5)
-              }
-          }
-          // "Scan Organization Folder Triggers" : 1 day
-          // We need to configure this stuff by hand because JobDSL only allow 'periodic(int min)' for now
-          triggers {
-              periodicFolderTrigger {
-                  interval('1d')
-              }
-          }
-      }
 credentials:
   system:
     domainCredentials:
@@ -300,11 +236,6 @@ credentials:
           name: "github.com"
           description: "GitHub"
         credentials:
-          - gitLabApiTokenImpl:
-              scope: SYSTEM
-              id: gitlab-beedemo-dev-token
-              apiToken: "${gitlab-beedemo-dev-pat}"
-              description: "Gitlab Token fro beedemo-dev"
           - string:
               scope: GLOBAL
               id: cbdays-github-token-secret
