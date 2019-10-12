@@ -232,23 +232,24 @@ kube:
 credentials:
   system:
     domainCredentials:
-      - gitLabApiTokenImpl:
-          scope: SYSTEM
-          id: gitlab-beedemo-dev-token
-          apiToken: "${gitlab-beedemo-dev-pat}"
+    - domain :
+        name: "github.com"
+        description: "GitHub"
+      credentials:
+        - string:
+            scope: GLOBAL
+            id: cbdays-github-token-secret
+            description: "GitHub PAT for beedemo-ops from JCasC - secret text"
+            secret: ${github-ops-token}
+        - usernamePassword:
+            scope: GLOBAL
+            id: cbdays-github-token
+            description: "GitHub PAT for beedemo-ops from JCasC"
+            username: beedemo-ops
+            password: ${github-ops-token}"
+    - credentials:
+      - gitlabPersonalAccessToken:
           description: "Gitlab Token fro beedemo-dev"
-      - domain :
-          name: "github.com"
-          description: "GitHub"
-        credentials:
-          - string:
-              scope: GLOBAL
-              id: cbdays-github-token-secret
-              description: "GitHub PAT for beedemo-ops from JCasC - secret text"
-              secret: ${github-ops-token}
-          - usernamePassword:
-              scope: GLOBAL
-              id: cbdays-github-token
-              description: "GitHub PAT for beedemo-ops from JCasC"
-              username: beedemo-ops
-              password: ${github-ops-token}
+          id: "gitlab-beedemo-dev-token"
+          scope: GLOBAL
+          token:
