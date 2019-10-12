@@ -91,15 +91,13 @@ jenkins:
       disableSyntaxHighlighting: true
   numExecutors: 0
 unclassified:
-  gitlabconnectionconfig:
-    connections:
-      - apiTokenId: gitlab-beedemo-dev-token
-        clientBuilderId: "autodetect"
-        connectionTimeout: 20
-        ignoreCertificateErrors: true
-        name: "gitlab.com"
-        readTimeout: 10
-        url: "https://gitlab.com/"
+  gitLabServers:
+    servers:
+    - credentialsId: "gitlab-beedemo-dev-token"
+      manageSystemHooks: true
+      manageWebHooks: true
+      name: "gitlab-beedemo-dev"
+      serverUrl: "https://gitlab.com"
   githubpluginconfig:
     configs:
     - name: "GitHub - CloudBees Days"
