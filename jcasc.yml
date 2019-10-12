@@ -233,7 +233,7 @@ credentials:
   system:
     domainCredentials:
       - gitLabApiTokenImpl:
-          scope: GLOBAL
+          scope: SYSTEM
           id: gitlab-beedemo-dev-token
           apiToken: "${gitlab-beedemo-dev-pat}"
           description: "Gitlab Token fro beedemo-dev"
