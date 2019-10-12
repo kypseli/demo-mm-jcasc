@@ -232,12 +232,11 @@ kube:
 credentials:
   system:
     domainCredentials:
-      domainCredentials:
-        - gitLabApiTokenImpl:
-            scope: SYSTEM
-            id: gitlab-beedemo-dev-token
-            apiToken: "${gitlab-beedemo-dev-pat}"
-            description: "Gitlab Token fro beedemo-dev"
+      - gitLabApiTokenImpl:
+          scope: GLOBAL
+          id: gitlab-beedemo-dev-token
+          apiToken: "${gitlab-beedemo-dev-pat}"
+          description: "Gitlab Token fro beedemo-dev"
       - domain :
           name: "github.com"
           description: "GitHub"
