@@ -259,6 +259,26 @@ jobs:
           periodic(5)
         }
       }
+  - script: >
+      multibranchPipelineJob('demo-oc-casc') {
+        branchSources {
+          github {
+            // The id option in the Git and GitHub branch source contexts is now mandatory (JENKINS-43693).
+            id('demo-oc-casc') // IMPORTANT: use a constant and unique identifier
+            scanCredentialsId('cbdays-github-token')
+            repoOwner('kypseli')
+            repository('demo-oc-casc')
+          }
+        }
+        orphanedItemStrategy {
+          discardOldItems {
+            numToKeep(1)
+          }
+        }
+        triggers {
+          periodic(5)
+        }
+      }
 credentials:
   system:
     domainCredentials:
