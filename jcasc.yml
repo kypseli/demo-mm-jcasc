@@ -238,13 +238,13 @@ kube:
             runAsUser: 1000
 jobs:
   - script: >
-      organizationFolder('dev/beedemo-dev') {
-        description("GitLab group folder for beedemo-dev group")
-        displayName('beedemo-dev - GitLab Group')
+      organizationFolder('dev/beedemo-hellworld') {
+        description("GitLab group folder for beedemo-hellworld group")
+        displayName('beedemo-hellworld - GitLab Group')
         // "Projects"
         organizations {
           gitLabSCMNavigator {
-            projectOwner("beedemo-dev")
+            projectOwner("beedemo-hellworld")
             credentialsId("gitlab-beedemo-dev-token")
             serverName("gitlab-beedemo-dev")
             // "Traits" ("Behaviours" in the GUI) that are "declarative-compatible"
