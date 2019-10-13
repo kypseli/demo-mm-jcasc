@@ -13,12 +13,12 @@ pipeline {
     preserveStashes(buildCount: 5)
   }
   stages {
-    when {
-      not {
-        branch "master"
-      }
-    }
     stage('Create Managed Master from Groovy') {
+      when {
+        not {
+          branch "master"
+        }
+      }
       steps {
         echo "setting up K8s objects"
         sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
@@ -47,6 +47,11 @@ pipeline {
       }
     }
     stage('Update Managed Master from Groovy') {
+      when {
+        not {
+          branch "master"
+        }
+      }
       steps {
         echo "preparing Jenkins CLI to update ${BRANCH_NAME}"
         sh 'curl -O http://cjoc/cjoc/jnlpJars/jenkins-cli.jar'
