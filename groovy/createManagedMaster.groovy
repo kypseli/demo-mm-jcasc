@@ -90,9 +90,11 @@ def configuration = new KubernetesMasterProvisioning()
 props.each { key, value ->
     configuration."$key" = value
 }
-
 def j = Jenkins.instance
-ManagedMaster master = j.createProject(ManagedMaster.class, masterName)
+
+def mmFolder = j.getItemByFullName("managed-masters")
+
+ManagedMaster master = mmFolder.createProject(ManagedMaster.class, masterName)
 
 println "Set config..."
 master.setConfiguration(configuration)
