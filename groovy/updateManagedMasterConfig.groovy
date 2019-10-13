@@ -47,7 +47,7 @@ spec:
         fsGroup: 1000  
       """
    def mmConfig = mm.configuration
-   if(mmConfi.yaml != newYaml) {
+   if(mmConfig.yaml != newYaml) {
         mmConfig.yaml = newYaml
         // mmConfig provides a lot of configuration options. See the sister script in this directory for enumeration of those properties.
         mm.configuration = mmConfig
