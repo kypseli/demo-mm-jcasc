@@ -245,7 +245,7 @@ jobs:
         organizations {
           gitLabSCMNavigator {
             projectOwner("beedemo-hellworld")
-            credentialsId("gitlab-beedemo-dev-token")
+            credentialsId("gitlab-beedemo-dev-user-pwd")
             serverName("gitlab-beedemo-dev")
             // "Traits" ("Behaviours" in the GUI) that are "declarative-compatible"
             traits {
@@ -316,3 +316,9 @@ credentials:
           id: gitlab-beedemo-dev-token
           scope: GLOBAL
           token: ${gitlab-beedemo-dev-pat}
+      - usernamePassword:
+          scope: GLOBAL
+          id: gitlab-beedemo-dev-user-pwd
+          description: "GitLab username/password for beedemo-dev from JCasC"
+          username: beedemo-dev
+          password: ${gitlab-beedemo-dev-password}"
