@@ -13,6 +13,11 @@ pipeline {
     preserveStashes(buildCount: 5)
   }
   stages {
+    when {
+      not {
+        branch "master"
+      }
+    }
     stage('Create Managed Master from Groovy') {
       steps {
         echo "setting up K8s objects"
