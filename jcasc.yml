@@ -240,63 +240,40 @@ kube:
             runAsUser: 1000
 jobs:
   - script: >
-      multibranchPipelineJob('demo-team-masters') {
-        branchSources {
-          github {
-            // The id option in the Git and GitHub branch source contexts is now mandatory (JENKINS-43693).
-            id('demo-team-masters') // IMPORTANT: use a constant and unique identifier
-            scanCredentialsId('cbdays-github-token')
-            repoOwner('kypseli')
-            repository('demo-team-masters')
-          }
-        }
-        orphanedItemStrategy {
-          discardOldItems {
-            numToKeep(1)
-          }
-        }
+      organizationFolder('kypseli') {
+        description('GitHub Kypseli Org for Ops Jobs')
+        displayName('kypseli')
         triggers {
-          periodic(5)
+          periodic(2400)
         }
-      }
-  - script: >
-      multibranchPipelineJob('demo-mm-jcasc') {
-        branchSources {
+        organizations {
           github {
-            // The id option in the Git and GitHub branch source contexts is now mandatory (JENKINS-43693).
-            id('demo-oc-casc') // IMPORTANT: use a constant and unique identifier
-            scanCredentialsId('cbdays-github-token')
-            repoOwner('kypseli')
-            repository('demo-mm-jcasc')
+            repoOwner("beedemo-ops")
+            apiUri("https://api.github.com")
+            credentialsId('cbdays-github-token')
+            traits {
+              publicRepoPullRequestFilterTrait()
+            }
           }
         }
-        orphanedItemStrategy {
-          discardOldItems {
-            numToKeep(1)
+        configure {
+            def traits = it / navigators / 'org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator' / traits
+            traits << 'org.jenkinsci.plugins.github_branch_source.BranchDiscoveryTrait' {
+                strategyId 1
+            }
+            traits << 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait' {
+                strategyId 2
+                trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustEveryone')
+            }
+            traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
+                strategyId 2
+            }
+        }
+        projectFactories {
+          workflowMultiBranchProjectFactory {
+            // Relative location within the checkout of your Pipeline script.
+            scriptPath("OpsJenkinsfile")
           }
-        }
-        triggers {
-          periodic(5)
-        }
-      }      
-  - script: >
-      multibranchPipelineJob('demo-oc-casc') {
-        branchSources {
-          github {
-            // The id option in the Git and GitHub branch source contexts is now mandatory (JENKINS-43693).
-            id('demo-oc-casc') // IMPORTANT: use a constant and unique identifier
-            scanCredentialsId('cbdays-github-token')
-            repoOwner('kypseli')
-            repository('demo-oc-casc')
-          }
-        }
-        orphanedItemStrategy {
-          discardOldItems {
-            numToKeep(1)
-          }
-        }
-        triggers {
-          periodic(5)
         }
       }
 credentials:
