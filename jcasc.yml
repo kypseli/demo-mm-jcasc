@@ -248,7 +248,7 @@ jobs:
         }
         organizations {
           github {
-            repoOwner("beedemo-ops")
+            repoOwner("kypseli")
             apiUri("https://api.github.com")
             credentialsId('cbdays-github-token')
             traits {
@@ -263,7 +263,7 @@ jobs:
             }
             traits << 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait' {
                 strategyId 2
-                trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustEveryone')
+                trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
             }
             traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
                 strategyId 2
