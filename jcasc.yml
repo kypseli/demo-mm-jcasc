@@ -239,13 +239,13 @@ kube:
 jobs:
   - url: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/dev/groovy/beedCdGitHubOrg.groovy
   - script: >
-      organizationFolder('dev/beedemo-hellworld') {
+      organizationFolder('/dev/beedemo-hellworld') {
         description("GitLab group folder for beedemo-hellworld group")
         displayName('beedemo-hellworld - GitLab Group')
         // "Projects"
         organizations {
           gitLabSCMNavigator {
-            projectOwner("beedemo-hellworld")
+            projectOwner("beedemo-helloworld")
             credentialsId("gitlab-beedemo-dev-user-pwd")
             serverName("gitlab-beedemo-dev")
             // "Traits" ("Behaviours" in the GUI) that are "declarative-compatible"
