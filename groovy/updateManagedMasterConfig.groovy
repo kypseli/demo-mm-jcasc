@@ -46,6 +46,7 @@ spec:
         runAsUser: 1000
         fsGroup: 1000  
       """
+
    def mmConfig = mm.configuration
    if(mmConfig.yaml != newYaml) {
         mmConfig.yaml = newYaml
@@ -56,3 +57,4 @@ spec:
         mm.restartAction(false) // the false here causes a graceful shutdown. Specifying true would force the termination of the pod.
    }
 }
+
