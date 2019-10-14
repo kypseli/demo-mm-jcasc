@@ -22,11 +22,13 @@ pipeline {
         }
         echo "preparing Jenkins CLI"
         sh 'curl -O http://cjoc/cjoc/jnlpJars/jenkins-cli.jar'
-        sh("sed -i 's#BRANCH_NAME#${BRANCH_NAME}#' groovy/createManagedMaster.groovy")
+        sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' groovy/createManagedMaster.groovy")
+        sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' groovy/updateManagedMasterConfig.groovy")
         withCredentials([usernamePassword(credentialsId: 'cli-username-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh """
             alias cli='java -jar jenkins-cli.jar -s \'http://cjoc/cjoc/\' -auth $USERNAME:$PASSWORD'
             cli groovy = < groovy/createManagedMaster.groovy
+            cli groovy = < groovy/updateManagedMasterConfig.groovy
             alias cli='java -jar jenkins-cli.jar -s \'http://managed-masters-${BRANCH_NAME}.${BRANCH_NAME}.svc.cluster.local/managed-masters-${BRANCH_NAME}/\' -auth $USERNAME:$PASSWORD'
             cli reload-jcasc-configuration
           """

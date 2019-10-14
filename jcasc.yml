@@ -229,6 +229,8 @@ kube:
         spec:
           securityContext:
             runAsUser: 1000
+groovy:
+  - url: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/cloud-run/groovy/pipelineTemplateCatalog.groovy         
 credentials:
   system:
     domainCredentials:

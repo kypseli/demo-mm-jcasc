@@ -18,7 +18,7 @@ import com.cloudbees.opscenter.server.properties.ConnectedMasterLicenseServerPro
 import com.cloudbees.opscenter.server.model.OperationsCenter
 
 
-String masterName = "BRANCH_NAME"
+String masterName = "REPLACE_BRANCH_NAME"
 
 if(OperationsCenter.getInstance().getConnectedMasters().any { it?.getName()==masterName }) {
     println "Master with this name already exists."
@@ -33,7 +33,7 @@ Map props = [
 //    domain: "test-custom-domain-1", //String
 //    envVars: "", //String
       fsGroup: "1000", //String
-      image: "CloudBees Official", //String -- set this up in Operations Center Docker Image configuration
+//    image: "", //String -- set this up in Operations Center Docker Image configuration
       javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false ", //String
 //    jenkinsOptions:"", //String
 //    kubernetesInternalDomain: "cluster.local", //String
@@ -41,7 +41,7 @@ Map props = [
 //    livenessPeriodSeconds: 10, //Integer
 //    livenessTimeoutSeconds: 10, //Integer
       memory: 3060, //Integer
-      namespace: "BRANCH_NAME", //String
+      namespace: "REPLACE_BRANCH_NAME", //String
 //    ratio: 0.7, //Double
       storageClassName: "ssd", //String
       systemProperties:"cb.IMProp.warProfiles=bluesteel-core.json", //String
@@ -69,7 +69,7 @@ spec:
           - name: SECRETS
             value: /var/jenkins_home/mm-secrets
           - name: CASC_JENKINS_CONFIG
-            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/BRANCH_NAME/jcasc.yml
+            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/REPLACE_BRANCH_NAME/jcasc.yml
         volumeMounts:
         - name: mm-secrets
           mountPath: /var/jenkins_home/mm-secrets
