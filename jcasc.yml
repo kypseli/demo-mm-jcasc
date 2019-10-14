@@ -238,6 +238,8 @@ kube:
             runAsUser: 1000
 jobs:
   - script: >
+      folder('dev')
+  - script: >
       organizationFolder('/dev/beedemo-hellworld') {
         description("GitLab group folder for beedemo-hellworld group")
         displayName('beedemo-hellworld - GitLab Group')
