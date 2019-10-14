@@ -237,6 +237,7 @@ kube:
           securityContext:
             runAsUser: 1000
 jobs:
+  - url: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/dev/groovy/beedCdGitHubOrg.groovy
   - script: >
       organizationFolder('dev/beedemo-hellworld') {
         description("GitLab group folder for beedemo-hellworld group")
@@ -309,7 +310,13 @@ credentials:
             id: cbdays-github-token
             description: "GitHub PAT for beedemo-ops from JCasC"
             username: beedemo-ops
-            password: ${github-ops-token}"
+            password: ${github-ops-token}}
+        - usernamePassword:
+            scope: GLOBAL
+            id: beedemo-dev-github-username-pat
+            description: "GitHub PAT for beedemo-dev from JCasC"
+            username: beedemo-dev
+            password: ${github-beedemo-dev-pat}"
     - credentials:
       - gitlabPersonalAccessToken:
           description: "Gitlab Token fro beedemo-dev"
