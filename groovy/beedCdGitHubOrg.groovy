@@ -1,4 +1,4 @@
-  organizationFolder('dev/bee-cd') {
+  organizationFolder('/dev/bee-cd') {
     description('bee-cd GitHub Organization')
     displayName('bee-cd GitHub Organization')
     triggers {
