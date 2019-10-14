@@ -244,7 +244,7 @@ jobs:
         // "Projects"
         organizations {
           gitLabSCMNavigator {
-            projectOwner("beedemo-hellworld")
+            projectOwner("beedemo-helloworld")
             credentialsId("gitlab-beedemo-dev-user-pwd")
             serverName("gitlab-beedemo-dev")
             // "Traits" ("Behaviours" in the GUI) that are "declarative-compatible"
