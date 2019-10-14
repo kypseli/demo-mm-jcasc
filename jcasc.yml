@@ -316,7 +316,7 @@ credentials:
             id: beedemo-dev-github-username-pat
             description: "GitHub PAT for beedemo-dev from JCasC"
             username: beedemo-dev
-            password: ${github-beedemo-dev-pat}"
+            password: ${github-beedemo-dev-pat}
     - credentials:
       - gitlabPersonalAccessToken:
           description: "Gitlab Token fro beedemo-dev"
