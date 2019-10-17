@@ -23,6 +23,7 @@ pipeline {
         echo "setting up K8s objects"
         sh("sed -i 's#REPLACE_BRANCH_NAME#${BRANCH_NAME}#' k8s/mm.yml")
         container('kubectl') {
+          sh "kubectl create namespace ${BRANCH_NAME}"
           sh """
           kubectl get configmap jenkins-agent -n core-demo -o yaml \
             | sed s/"namespace: core-demo"/"namespace: ${BRANCH_NAME}"/\
