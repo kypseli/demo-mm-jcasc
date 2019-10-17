@@ -44,7 +44,7 @@ Map props = [
       namespace: "REPLACE_BRANCH_NAME", //String
 //    ratio: 0.7, //Double
       storageClassName: "ssd", //String
-//    systemProperties:"", //String
+      systemProperties:"cb.IMProp.warProfiles=bluesteel-core.json", //String
 //    terminationGracePeriodSeconds: 1200, //Integer
       yaml:"""
 ---
