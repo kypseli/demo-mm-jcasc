@@ -6,7 +6,7 @@ jenkins:
   - "Ping"
   clouds:
   - kubernetes:
-      connectTimeout: 5
+      connectTimeout: 6
       containerCapStr: "10"
       credentialsId: "k8s-core-demo-jenkins-sa"
       defaultsProviderTemplate: "default-jnlp"
