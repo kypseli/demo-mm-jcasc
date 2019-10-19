@@ -8,7 +8,7 @@ jenkins:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: "k8s-core-demo-jenkins-sa"
+      credentialsId: "k8s-sa-core-demo-jenkins"
       defaultsProviderTemplate: "default-jnlp"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
