@@ -42,6 +42,7 @@ spec:
           secretName: mm-secrets
       nodeSelector:
         type: master
+      automountServiceAccountToken: false
       securityContext:
         runAsUser: 1000
         fsGroup: 1000  
