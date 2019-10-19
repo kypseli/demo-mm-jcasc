@@ -43,6 +43,8 @@ spec:
           secretName: mm-secrets
       nodeSelector:
         type: master
+      serviceAccount: REPLACE_BRANCH_NAME
+      serviceAccountName: REPLACE_BRANCH_NAME
       securityContext:
         runAsUser: 1000
         fsGroup: 1000  
