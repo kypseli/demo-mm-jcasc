@@ -228,9 +228,7 @@ kube:
           name: default-jnlp
         spec:
           securityContext:
-            runAsUser: 1000        
-groovy:
-  - url: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/cloud-run/groovy/createHugoPipelineFromTemplate.groovy            
+            runAsUser: 1000                   
 credentials:
   system:
     domainCredentials:
