@@ -7,6 +7,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: REPLACE_BRANCH_NAME
+automountServiceAccountToken: false
 ---
 apiVersion: v1
 kind: ServiceAccount
