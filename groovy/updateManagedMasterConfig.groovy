@@ -42,6 +42,8 @@ spec:
           secretName: mm-secrets
       nodeSelector:
         type: master
+      serviceAccount: cloud-run-sa
+      serviceAccountName: cloud-run-sa
       automountServiceAccountToken: false
       securityContext:
         runAsUser: 1000
