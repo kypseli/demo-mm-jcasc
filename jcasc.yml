@@ -33,6 +33,7 @@ jenkins:
         name: "default-jnlp"
         nodeSelector: "type=agent"
         nodeUsageMode: "NORMAL"
+        serviceAccount: "cloud-run-sa"
         volumes:
         - configMapVolume:
             configMapName: "jenkins-agent"
