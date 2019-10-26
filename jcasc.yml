@@ -31,7 +31,8 @@ jenkins:
           ttyEnabled: true
         label: "default-jnlp"
         name: "default-jnlp"
-        nodeSelector: "type=agent"
+        nodeSelector: "type=master"
+        serviceAccount: "jenkins"
         nodeUsageMode: "NORMAL"
         volumes:
         - configMapVolume:
