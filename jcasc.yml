@@ -8,11 +8,11 @@ jenkins:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: "k8s-cloud-run-sa"
+      credentialsId: "k8s-core-demo-jenkins-sa"
       defaultsProviderTemplate: "default-jnlp"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
-      namespace: "cloud-run"
+      namespace: "core-demo"
       readTimeout: 15
       serverCertificate: |-
         ${core-workshop-cert}
@@ -33,7 +33,7 @@ jenkins:
         name: "default-jnlp"
         nodeSelector: "type=master"
         nodeUsageMode: "NORMAL"
-        serviceAccount: "cloud-run-sa"
+        serviceAccount: "jenkins"
         volumes:
         - configMapVolume:
             configMapName: "jenkins-agent"
