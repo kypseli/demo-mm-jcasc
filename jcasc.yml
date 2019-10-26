@@ -310,7 +310,7 @@ credentials:
             id: cbdays-github-token
             description: "GitHub PAT for beedemo-ops from JCasC"
             username: beedemo-ops
-            password: ${github-ops-token}}
+            password: ${github-ops-token}
         - usernamePassword:
             scope: GLOBAL
             id: beedemo-dev-github-username-pat
