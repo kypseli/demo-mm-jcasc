@@ -8,8 +8,7 @@ def mm = OperationsCenter
        .find { it.name==needleMasterName }
 
 if(mm) {
-   def mmConfig = mm.configuration
-   mmConfig.yaml = """
+    def newYaml = """
 ---
 kind: Ingress
 metadata:
@@ -32,7 +31,7 @@ spec:
           - name: SECRETS
             value: /var/jenkins_home/mm-secrets
           - name: CASC_JENKINS_CONFIG
-            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/REPLACE_BRANCH_NAME/jcasc.yml
+            value: /var/jenkins_home/jcasc.yml
         volumeMounts:
         - name: mm-secrets
           mountPath: /var/jenkins_home/mm-secrets
@@ -43,15 +42,19 @@ spec:
           secretName: mm-secrets
       nodeSelector:
         type: master
-      serviceAccount: REPLACE_BRANCH_NAME
-      serviceAccountName: REPLACE_BRANCH_NAME
       securityContext:
         runAsUser: 1000
         fsGroup: 1000  
       """
-   // mmConfig provides a lot of configuration options. See the sister script in this directory for enumeration of those properties.
-   mm.configuration = mmConfig
-   mm.save()
-   println("Saved configuration. Restarting master.")
-   mm.restartAction(false) // the false here causes a graceful shutdown. Specifying true would force the termination of the pod.
+
+   def mmConfig = mm.configuration
+   if(mmConfig.yaml != newYaml) {
+        mmConfig.yaml = newYaml
+        // mmConfig provides a lot of configuration options. See the sister script in this directory for enumeration of those properties.
+        mm.configuration = mmConfig
+        mm.save()
+        println("Saved configuration. Restarting master.")
+        mm.restartAction(false) // the false here causes a graceful shutdown. Specifying true would force the termination of the pod.
+        sleep 400
+   }
 }
