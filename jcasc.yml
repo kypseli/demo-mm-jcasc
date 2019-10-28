@@ -1,95 +1,4 @@
 jenkins:
-  agentProtocols:
-  - "Diagnostic-Ping"
-  - "JNLP4-connect"
-  - "OperationsCenter2"
-  - "Ping"
-  clouds:
-  - kubernetes:
-      connectTimeout: 6
-      containerCapStr: "10"
-      credentialsId: "k8s-core-demo-jenkins-sa"
-      defaultsProviderTemplate: "default-jnlp"
-      maxRequestsPerHostStr: "32"
-      name: "kubernetes"
-      namespace: "core-demo"
-      readTimeout: 15
-      serverCertificate: |-
-        ${core-workshop-cert}
-      templates:
-      - containers:
-        - args: "/var/jenkins_config/jenkins-agent"
-          command: "/bin/sh"
-          image: "gcr.io/technologists/k8s-jnlp-agent:0.0.5"
-          livenessProbe:
-            failureThreshold: 0
-            initialDelaySeconds: 0
-            periodSeconds: 0
-            successThreshold: 0
-            timeoutSeconds: 0
-          name: "jnlp"
-          ttyEnabled: true
-        label: "default-jnlp"
-        name: "default-jnlp"
-        nodeSelector: "type=master"
-        nodeUsageMode: "NORMAL"
-        volumes:
-        - configMapVolume:
-            configMapName: "jenkins-agent"
-            mountPath: "/var/jenkins_config"
-        workspaceVolume:
-          emptyDirWorkspaceVolume:
-            memory: false
-        yaml: |-
-          apiVersion: v1
-          kind: Pod
-          metadata:
-            name: default-jnlp
-          spec:
-            containers:
-            - args:
-              - /var/jenkins_config/jenkins-agent
-              command:
-              - /bin/sh
-              image: gcr.io/technologists/k8s-jnlp-agent:0.0.5
-              imagePullPolicy: IfNotPresent
-              name: jnlp
-              resources: {}
-              tty: true
-              securityContext:
-                runAsUser: 1000
-            securityContext:
-              runAsUser: 1000
-        yamlMergeStrategy: "merge"
-        yamls:
-        - |-
-          apiVersion: v1
-          kind: Pod
-          metadata:
-            name: default-jnlp
-          spec:
-            containers:
-            - args:
-              - /var/jenkins_config/jenkins-agent
-              command:
-              - /bin/sh
-              image: gcr.io/technologists/k8s-jnlp-agent:0.0.5
-              imagePullPolicy: IfNotPresent
-              name: jnlp
-              resources: {}
-              tty: true
-              securityContext:
-                runAsUser: 1000
-            securityContext:
-              runAsUser: 1000
-  crumbIssuer:
-    standard:
-      excludeClientIPFromCrumb: false
-  disableRememberMe: false
-  markupFormatter:
-    rawHtml:
-      disableSyntaxHighlighting: true
-  numExecutors: 0
 unclassified:
   gitLabServers:
     servers:
@@ -98,31 +7,13 @@ unclassified:
       manageWebHooks: true
       name: "gitlab-beedemo-dev"
       serverUrl: "https://gitlab.com"
-  githubpluginconfig:
-    configs:
-    - name: "GitHub - CloudBees Days"
-      credentialsId: "cbdays-github-token-secret"
-      manageHooks: true
-  globalDefaultFlowDurabilityLevel:
-    durabilityHint: SURVIVABLE_NONATOMIC
-  globallibraries:
-    libraries:
-    - defaultVersion: "master"
-      name: "cb-days"
-      retriever:
-        modernSCM:
-          scm:
-            github:
-              credentialsId: "cbdays-github-token"
-              repoOwner: "cloudbees-days"
-              repository: "pipeline-library"
 kube:
   podTemplatesConfiguration:
     templates:
     - containers:
       - args: "cat"
         command: "/bin/sh -c"
-        image: "node:8.12.0-alpine"
+        image: "node:13.0.1-alpine"
         livenessProbe:
           failureThreshold: 0
           initialDelaySeconds: 0
@@ -137,84 +28,6 @@ kube:
         ttyEnabled: true
       label: "nodejs-app"
       name: "nodejs-app"
-      workspaceVolume:
-        emptyDirWorkspaceVolume:
-          memory: false
-      yaml: |-
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          name: default-jnlp
-        spec:
-          securityContext:
-            runAsUser: 1000
-      yamlMergeStrategy: "override"
-      yamls:
-      - |-
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          name: default-jnlp
-        spec:
-          securityContext:
-            runAsUser: 1000
-    - containers:
-      - args: "cat"
-        command: "/bin/sh -c"
-        image: "openjdk:10-jdk-slim-sid"
-        livenessProbe:
-          failureThreshold: 0
-          initialDelaySeconds: 0
-          periodSeconds: 0
-          successThreshold: 0
-          timeoutSeconds: 0
-        name: "jdk10"
-        resourceLimitCpu: "1"
-        resourceLimitMemory: "1Gi"
-        resourceRequestCpu: "500m"
-        resourceRequestMemory: "512Mi"
-        ttyEnabled: true
-      label: "jdk10"
-      name: "jdk10"
-      workspaceVolume:
-        emptyDirWorkspaceVolume:
-          memory: false
-      yaml: |-
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          name: default-jnlp
-        spec:
-          securityContext:
-            runAsUser: 1000
-      yamlMergeStrategy: "override"
-      yamls:
-      - |-
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          name: default-jnlp
-        spec:
-          securityContext:
-            runAsUser: 1000
-    - containers:
-      - args: "cat"
-        command: "/bin/sh -c"
-        image: "openjdk:8-jdk-slim"
-        livenessProbe:
-          failureThreshold: 0
-          initialDelaySeconds: 0
-          periodSeconds: 0
-          successThreshold: 0
-          timeoutSeconds: 0
-        name: "jdk8"
-        resourceLimitCpu: "1"
-        resourceLimitMemory: "1Gi"
-        resourceRequestCpu: "500m"
-        resourceRequestMemory: "512Mi"
-        ttyEnabled: true
-      label: "jdk8"
-      name: "jdk8"
       workspaceVolume:
         emptyDirWorkspaceVolume:
           memory: false
