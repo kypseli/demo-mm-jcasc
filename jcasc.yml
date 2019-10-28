@@ -20,7 +20,7 @@ jenkins:
       - containers:
         - args: "/var/jenkins_config/jenkins-agent"
           command: "/bin/sh"
-          image: "gcr.io/technologists/k8s-jnlp-agent:0.0.5"
+          image: "gcr.io/core-workshop/k8s-jnlp-agent@sha256:28490f8659bcfdae8159286d6c88fdd7365d6928255103e7500f05dd527bdc8f"
           livenessProbe:
             failureThreshold: 0
             initialDelaySeconds: 0
@@ -52,7 +52,7 @@ jenkins:
               - /var/jenkins_config/jenkins-agent
               command:
               - /bin/sh
-              image: gcr.io/technologists/k8s-jnlp-agent:0.0.5
+              image: gcr.io/core-workshop/k8s-jnlp-agent@sha256:28490f8659bcfdae8159286d6c88fdd7365d6928255103e7500f05dd527bdc8f
               imagePullPolicy: IfNotPresent
               name: jnlp
               resources: {}
@@ -74,7 +74,7 @@ jenkins:
               - /var/jenkins_config/jenkins-agent
               command:
               - /bin/sh
-              image: gcr.io/technologists/k8s-jnlp-agent:0.0.5
+              image: gcr.io/core-workshop/k8s-jnlp-agent@sha256:28490f8659bcfdae8159286d6c88fdd7365d6928255103e7500f05dd527bdc8f
               imagePullPolicy: IfNotPresent
               name: jnlp
               resources: {}
