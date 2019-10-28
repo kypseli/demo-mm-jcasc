@@ -26,7 +26,7 @@ pipeline {
       steps {
         echo "preparing to reload JCasc for ${BRANCH_NAME}"
         sh("wget -O master-jcasc.yml https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/master/jcasc.yml")
-        sh("yq m -i jcasc.yml master-jcasc.yml")
+        sh("yq m -a -i jcasc.yml master-jcasc.yml")
         container('kubectl') {   
           sh("kubectl cp jcasc.yml core-demo/teams-dev-0:/var/jenkins_home/")
         }
