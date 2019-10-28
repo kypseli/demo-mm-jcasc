@@ -28,7 +28,7 @@ pipeline {
         sh("wget -O master-jcasc.yml https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/master/jcasc.yml")
         sh("yq m -i jcasc.yml master-jcasc.yml")
         container('kubectl') {   
-          sh("kubectl cp jcasc.yml core-demo/team-dev-0:/var/jenkins_home/")
+          sh("kubectl cp jcasc.yml core-demo/teams-dev-0:/var/jenkins_home/")
         }
         echo "preparing Jenkins CLI"
         sh 'curl -O http://managed-masters-ops.core-demo.svc.cluster.local/managed-masters-ops/jnlpJars/jenkins-cli.jar'
