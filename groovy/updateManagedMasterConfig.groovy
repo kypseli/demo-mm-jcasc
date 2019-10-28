@@ -31,7 +31,7 @@ spec:
           - name: SECRETS
             value: /var/jenkins_home/mm-secrets
           - name: CASC_JENKINS_CONFIG
-            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/REPLACE_BRANCH_NAME/jcasc.yml
+            value: /var/jenkins_home/jcasc.yml
         volumeMounts:
         - name: mm-secrets
           mountPath: /var/jenkins_home/mm-secrets
@@ -55,6 +55,7 @@ spec:
         mm.save()
         println("Saved configuration. Restarting master.")
         mm.restartAction(false) // the false here causes a graceful shutdown. Specifying true would force the termination of the pod.
+        sleep 400
    }
 }
 
