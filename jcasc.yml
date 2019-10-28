@@ -1,4 +1,3 @@
-jenkins:
 unclassified:
   gitLabServers:
     servers:
@@ -113,17 +112,6 @@ credentials:
         name: "github.com"
         description: "GitHub"
       credentials:
-        - string:
-            scope: GLOBAL
-            id: cbdays-github-token-secret
-            description: "GitHub PAT for beedemo-ops from JCasC - secret text"
-            secret: ${github-ops-token}
-        - usernamePassword:
-            scope: GLOBAL
-            id: cbdays-github-token
-            description: "GitHub PAT for beedemo-ops from JCasC"
-            username: beedemo-ops
-            password: ${github-ops-token}
         - usernamePassword:
             scope: GLOBAL
             id: beedemo-dev-github-username-pat
