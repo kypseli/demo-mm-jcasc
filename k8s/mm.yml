@@ -6,7 +6,7 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: REPLACE_BRANCH_NAME
+  name: cloud-run-sa
 automountServiceAccountToken: false
 ---
 apiVersion: v1
@@ -45,6 +45,8 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: jenkins
+- kind: ServiceAccount
+  name: cloud-run-sa
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
