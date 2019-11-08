@@ -273,6 +273,12 @@ kube:
           securityContext:
             runAsUser: 1000
 unclassified:
+  hibernationConfiguration:
+    activities:
+    - "build"
+    - "web"
+    enabled: true
+    gracePeriod: 600
   githubpluginconfig:
     configs:
     - credentialsId: cbdays-github-token-secret
