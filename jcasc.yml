@@ -98,7 +98,7 @@ credentials:
           description: "k8s-mm-ops-sa"
           id: k8s-mm-ops-sa
           scope: GLOBAL
-          token: ${k8s-mm-ops-sa}
+          secret: ${k8s-mm-ops-sa}
 jobs:
   - script: >
       organizationFolder('kypseli') {
