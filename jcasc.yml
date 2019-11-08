@@ -3,11 +3,11 @@ jenkins:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: "k8s-core-demo-jenkins-sa"
+      credentialsId: "k8s-mm-ops-sa"
       defaultsProviderTemplate: "default-jnlp"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
-      namespace: "core-demo"
+      namespace: "mm-ops"
       readTimeout: 15
       serverCertificate: |-
         ${core-k8s-cert}
@@ -28,7 +28,7 @@ jenkins:
         name: "default-jnlp"
         nodeSelector: "type=master"
         nodeUsageMode: "NORMAL"
-        serviceAccount: "jenkins"
+        serviceAccount: "mm-ops"
         volumes:
         - configMapVolume:
             configMapName: "jenkins-agent"
@@ -90,6 +90,15 @@ unclassified:
               credentialsId: "cbdays-github-token"
               repoOwner: "kypseli"
               repository: "pipeline-library"
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: "k8s-mm-ops-sa"
+          id: k8s-mm-ops-sa
+          scope: GLOBAL
+          token: ${k8s-mm-ops-sa}
 jobs:
   - script: >
       organizationFolder('kypseli') {
@@ -124,7 +133,7 @@ jobs:
         projectFactories {
           workflowMultiBranchProjectFactory {
             // Relative location within the checkout of your Pipeline script.
-            scriptPath("OpsJenkinsfile")
+            scriptPath("PreviewOpsJenkinsfile")
           }
         }
       }
