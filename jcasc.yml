@@ -1,38 +1,60 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: GitHub PAT for beedemo-ops from JCasC - secret text
+          id: cbdays-github-token-secret
+          scope: GLOBAL
+          secret: ${github-ops-token}
+      - usernamePassword:
+          description: GitHub PAT for beedemo-ops from JCasC
+          id: cbdays-github-token
+          password: ${github-ops-token}
+          scope: GLOBAL
+          username: beedemo-ops
+      domain:
+        description: GitHub
+        name: github.com
 jenkins:
+  agentProtocols:
+  - Diagnostic-Ping
+  - JNLP4-connect
+  - OperationsCenter2
+  - Ping
   clouds:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: "k8s-core-demo-jenkins-sa"
-      defaultsProviderTemplate: "default-jnlp"
+      credentialsId: k8s-sa-core-demo-jenkins
+      defaultsProviderTemplate: default-jnlp
       maxRequestsPerHostStr: "32"
-      name: "kubernetes"
-      namespace: "core-demo"
+      name: kubernetes
+      namespace: core-demo
       readTimeout: 15
-      serverCertificate: |-
-        ${core-workshop-cert}
+      serverCertificate: ${core-workshop-cert}
       templates:
       - containers:
-        - args: "/var/jenkins_config/jenkins-agent"
-          command: "/bin/sh"
-          image: "gcr.io/core-workshop/k8s-jnlp-agent@sha256:28490f8659bcfdae8159286d6c88fdd7365d6928255103e7500f05dd527bdc8f"
+        - args: /var/jenkins_config/jenkins-agent
+          command: /bin/sh
+          image: gcr.io/core-workshop/k8s-jnlp-agent@sha256:28490f8659bcfdae8159286d6c88fdd7365d6928255103e7500f05dd527bdc8f
           livenessProbe:
             failureThreshold: 0
             initialDelaySeconds: 0
             periodSeconds: 0
             successThreshold: 0
             timeoutSeconds: 0
-          name: "jnlp"
+          name: jnlp
           ttyEnabled: true
-        label: "default-jnlp"
-        name: "default-jnlp"
-        nodeSelector: "type=master"
-        nodeUsageMode: "NORMAL"
-        serviceAccount: "jenkins"
+        label: default-jnlp
+        name: default-jnlp
+        nodeSelector: type=master
+        nodeUsageMode: NORMAL
+        serviceAccount: mm-ops
         volumes:
         - configMapVolume:
-            configMapName: "jenkins-agent"
-            mountPath: "/var/jenkins_config"
+            configMapName: jenkins-agent
+            mountPath: /var/jenkins_config
         workspaceVolume:
           emptyDirWorkspaceVolume:
             memory: false
@@ -56,7 +78,7 @@ jenkins:
                 runAsUser: 1000
             securityContext:
               runAsUser: 1000
-        yamlMergeStrategy: "merge"
+        yamlMergeStrategy: merge
         yamls:
         - |-
           apiVersion: v1
@@ -78,53 +100,197 @@ jenkins:
                 runAsUser: 1000
             securityContext:
               runAsUser: 1000
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: true
+  numExecutors: 0
+jobs:
+- script: |
+    organizationFolder('kypseli') {
+      description('GitHub Kypseli Org for Ops Jobs')
+      displayName('kypseli')
+      triggers {
+        periodic(2400)
+      }
+      organizations {
+        github {
+          repoOwner("kypseli")
+          apiUri("https://api.github.com")
+          credentialsId('cbdays-github-token')
+          traits {
+            publicRepoPullRequestFilterTrait()
+          }
+        }
+      }
+      configure {
+          def traits = it / navigators / 'org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator' / traits
+          traits << 'org.jenkinsci.plugins.github_branch_source.BranchDiscoveryTrait' {
+              strategyId 1
+          }
+          traits << 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait' {
+              strategyId 2
+              trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+          }
+          traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
+              strategyId 2
+          }
+      }
+      projectFactories {
+        workflowMultiBranchProjectFactory {
+          // Relative location within the checkout of your Pipeline script.
+          scriptPath("PreviewOpsJenkinsfile")
+        }
+      }
+    }
+kube:
+  podTemplatesConfiguration:
+    templates:
+    - containers:
+      - args: cat
+        command: /bin/sh -c
+        image: node:8.12.0-alpine
+        livenessProbe:
+          failureThreshold: 0
+          initialDelaySeconds: 0
+          periodSeconds: 0
+          successThreshold: 0
+          timeoutSeconds: 0
+        name: nodejs
+        resourceLimitCpu: "1"
+        resourceLimitMemory: 1Gi
+        resourceRequestCpu: 500m
+        resourceRequestMemory: 512Mi
+        ttyEnabled: true
+      label: nodejs-app
+      name: nodejs-app
+      workspaceVolume:
+        emptyDirWorkspaceVolume:
+          memory: false
+      yaml: |-
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: default-jnlp
+        spec:
+          securityContext:
+            runAsUser: 1000
+      yamlMergeStrategy: override
+      yamls:
+      - |-
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: default-jnlp
+        spec:
+          securityContext:
+            runAsUser: 1000
+    - containers:
+      - args: cat
+        command: /bin/sh -c
+        image: openjdk:10-jdk-slim-sid
+        livenessProbe:
+          failureThreshold: 0
+          initialDelaySeconds: 0
+          periodSeconds: 0
+          successThreshold: 0
+          timeoutSeconds: 0
+        name: jdk10
+        resourceLimitCpu: "1"
+        resourceLimitMemory: 1Gi
+        resourceRequestCpu: 500m
+        resourceRequestMemory: 512Mi
+        ttyEnabled: true
+      label: jdk10
+      name: jdk10
+      workspaceVolume:
+        emptyDirWorkspaceVolume:
+          memory: false
+      yaml: |-
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: default-jnlp
+        spec:
+          securityContext:
+            runAsUser: 1000
+      yamlMergeStrategy: override
+      yamls:
+      - |-
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: default-jnlp
+        spec:
+          securityContext:
+            runAsUser: 1000
+    - containers:
+      - args: cat
+        command: /bin/sh -c
+        image: openjdk:8-jdk-slim
+        livenessProbe:
+          failureThreshold: 0
+          initialDelaySeconds: 0
+          periodSeconds: 0
+          successThreshold: 0
+          timeoutSeconds: 0
+        name: jdk8
+        resourceLimitCpu: "1"
+        resourceLimitMemory: 1Gi
+        resourceRequestCpu: 500m
+        resourceRequestMemory: 512Mi
+        ttyEnabled: true
+      label: jdk8
+      name: jdk8
+      workspaceVolume:
+        emptyDirWorkspaceVolume:
+          memory: false
+      yaml: |-
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: default-jnlp
+        spec:
+          securityContext:
+            runAsUser: 1000
+      yamlMergeStrategy: override
+      yamls:
+      - |-
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: default-jnlp
+        spec:
+          securityContext:
+            runAsUser: 1000
 unclassified:
+  githubpluginconfig:
+    configs:
+    - credentialsId: cbdays-github-token-secret
+      manageHooks: true
+      name: GitHub - CloudBees Days
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: SURVIVABLE_NONATOMIC
   globallibraries:
     libraries:
-    - defaultVersion: "master"
-      name: "kypseli"
+    - defaultVersion: master
+      name: kypseli
       retriever:
         modernSCM:
           scm:
             github:
-              credentialsId: "cbdays-github-token"
-              repoOwner: "kypseli"
-              repository: "pipeline-library"
-jobs:
-  - script: >
-      organizationFolder('kypseli') {
-        description('GitHub Kypseli Org for Ops Jobs')
-        displayName('kypseli')
-        triggers {
-          periodic(2400)
-        }
-        organizations {
-          github {
-            repoOwner("kypseli")
-            apiUri("https://api.github.com")
-            credentialsId('cbdays-github-token')
-            traits {
-              publicRepoPullRequestFilterTrait()
-            }
-          }
-        }
-        configure {
-            def traits = it / navigators / 'org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator' / traits
-            traits << 'org.jenkinsci.plugins.github_branch_source.BranchDiscoveryTrait' {
-                strategyId 1
-            }
-            traits << 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait' {
-                strategyId 2
-                trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
-            }
-            traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
-                strategyId 2
-            }
-        }
-        projectFactories {
-          workflowMultiBranchProjectFactory {
-            // Relative location within the checkout of your Pipeline script.
-            scriptPath("OpsJenkinsfile")
-          }
-        }
-      }
+              credentialsId: cbdays-github-token
+              repoOwner: kypseli
+              repository: pipeline-library
+    - defaultVersion: master
+      name: cb-days
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              credentialsId: cbdays-github-token
+              repoOwner: cloudbees-days
+              repository: pipeline-library
