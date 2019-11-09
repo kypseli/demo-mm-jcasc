@@ -50,7 +50,7 @@ jenkins:
         name: default-jnlp
         nodeSelector: type=master
         nodeUsageMode: NORMAL
-        serviceAccount: mm-ops
+        serviceAccount: jenkins
         volumes:
         - configMapVolume:
             configMapName: jenkins-agent
@@ -142,7 +142,7 @@ jobs:
       projectFactories {
         workflowMultiBranchProjectFactory {
           // Relative location within the checkout of your Pipeline script.
-          scriptPath("PreviewOpsJenkinsfile")
+          scriptPath("OpsJenkinsfile")
         }
       }
     }
