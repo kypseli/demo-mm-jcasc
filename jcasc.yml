@@ -10,7 +10,7 @@ jenkins:
       namespace: "core-demo"
       readTimeout: 15
       serverCertificate: |-
-        ${core-k8s-cert}
+        ${core-workshop-cert}
       templates:
       - containers:
         - args: "/var/jenkins_config/jenkins-agent"
