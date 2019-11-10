@@ -31,7 +31,7 @@ jenkins:
           ttyEnabled: true
         label: "default-jnlp"
         name: "default-jnlp"
-        nodeSelector: "type=agent"
+        nodeSelector: "workload=general"
         nodeUsageMode: "NORMAL"
         serviceAccount: "cloud-run-sa"
         volumes:
