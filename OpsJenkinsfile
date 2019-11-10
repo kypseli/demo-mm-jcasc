@@ -30,6 +30,7 @@ pipeline {
             cli groovy = < groovy/createManagedMaster.groovy
             cli groovy = < groovy/updateManagedMasterConfig.groovy
             alias cli='java -jar jenkins-cli.jar -s \'http://managed-masters-${BRANCH_NAME}.${BRANCH_NAME}.svc.cluster.local/managed-masters-${BRANCH_NAME}/\' -auth $USERNAME:$PASSWORD'
+            sleep 240
             cli groovy = < groovy/createHugoPipelineFromTemplate.groovy
             cli reload-jcasc-configuration
           """
