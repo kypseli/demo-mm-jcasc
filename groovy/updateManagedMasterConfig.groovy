@@ -23,6 +23,19 @@ spec:
       annotations:
           cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
     spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: "com.cloudbees.cje.type"
+                  operator: "In"
+                  values:
+                  - "master"
+                matchLabels: {}
+              topologyKey: "kubernetes.io/hostname"
+            weight: 
       containers:
       - name: jenkins
         env:
