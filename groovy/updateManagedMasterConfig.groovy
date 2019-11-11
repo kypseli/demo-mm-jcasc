@@ -55,7 +55,7 @@ spec:
         mm.save()
         println("Saved configuration. Restarting master.")
         mm.restartAction(false) // the false here causes a graceful shutdown. Specifying true would force the termination of the pod.
-        sleep 400
+        sleep 240
    }
 }
 
