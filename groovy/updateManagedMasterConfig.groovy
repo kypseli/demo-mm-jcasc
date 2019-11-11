@@ -35,7 +35,7 @@ spec:
                   - "master"
                 matchLabels: {}
               topologyKey: "kubernetes.io/hostname"
-            weight: 
+            weight: 1
       containers:
       - name: jenkins
         env:
