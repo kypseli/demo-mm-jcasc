@@ -29,19 +29,19 @@ Map props = [
 //    allowExternalAgents: false, //boolean
 //    clusterEndpointId: "default", //String
 //    cpus: 1.0, //Double
-      disk: 50, //Integer //
+      disk: 30, //Integer //
 //    domain: "test-custom-domain-1", //String
 //    envVars: "", //String
       fsGroup: "1000", //String
 //    image: "", //String -- set this up in Operations Center Docker Image configuration
-      javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false ", //String
+      javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false", //String
 //    jenkinsOptions:"", //String
 //    kubernetesInternalDomain: "cluster.local", //String
 //    livenessInitialDelaySeconds: 300, //Integer
 //    livenessPeriodSeconds: 10, //Integer
 //    livenessTimeoutSeconds: 10, //Integer
-      memory: 3060, //Integer
-      namespace: "REPLACE_BRANCH_NAME", //String
+      memory: 4060, //Integer
+      namespace: "core-demo", //String
 //    ratio: 0.7, //Double
       storageClassName: "ssd", //String
 //    terminationGracePeriodSeconds: 1200, //Integer
