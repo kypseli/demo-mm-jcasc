@@ -49,6 +49,7 @@ kube:
           securityContext:
             runAsUser: 1000
 jobs:
+  - url: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/dev/groovy/beedCdGitHubOrg.groovy
   - script: >
       organizationFolder('/dev/beedemo-hellworld') {
         description("GitLab group folder for beedemo-hellworld group")
