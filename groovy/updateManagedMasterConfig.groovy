@@ -44,7 +44,6 @@ spec:
         type: master
       serviceAccount: cloud-run-sa
       serviceAccountName: cloud-run-sa
-      automountServiceAccountToken: false
       securityContext:
         runAsUser: 1000
         fsGroup: 1000  
