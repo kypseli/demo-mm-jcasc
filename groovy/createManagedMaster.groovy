@@ -20,33 +20,7 @@ import com.cloudbees.opscenter.server.model.OperationsCenter
 
 String masterName = "REPLACE_BRANCH_NAME"
 
-if(OperationsCenter.getInstance().getConnectedMasters().any { it?.getName()==masterName }) {
-    println "Master with this name already exists."
-    return
-}
-
-Map props = [
-//    allowExternalAgents: false, //boolean
-//    clusterEndpointId: "default", //String
-//    cpus: 1.0, //Double
-      disk: 50, //Integer //
-//    domain: "test-custom-domain-1", //String
-//    envVars: "", //String
-      fsGroup: "1000", //String
-//    image: "custom-image-name", //String -- set this up in Operations Center Docker Image configuration
-      javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false ", //String
-//    jenkinsOptions:"", //String
-//    kubernetesInternalDomain: "cluster.local", //String
-//    livenessInitialDelaySeconds: 300, //Integer
-//    livenessPeriodSeconds: 10, //Integer
-//    livenessTimeoutSeconds: 10, //Integer
-      memory: 3060, //Integer
-      namespace: "REPLACE_BRANCH_NAME", //String
-//    ratio: 0.7, //Double
-      storageClassName: "ssd", //String
-      systemProperties:"cb.IMProp.warProfiles=bluesteel-core.json", //String
-//    terminationGracePeriodSeconds: 1200, //Integer
-      yaml:"""
+def newYaml = """
 ---
 kind: Ingress
 metadata:
@@ -69,7 +43,7 @@ spec:
           - name: SECRETS
             value: /var/jenkins_home/mm-secrets
           - name: CASC_JENKINS_CONFIG
-            value: https://raw.githubusercontent.com/kypseli/demo-mm-jcasc/REPLACE_BRANCH_NAME/jcasc.yml
+            value: /var/jenkins_home/jcasc.yml
         volumeMounts:
         - name: mm-secrets
           mountPath: /var/jenkins_home/mm-secrets
@@ -80,12 +54,32 @@ spec:
           secretName: mm-secrets
       nodeSelector:
         type: master
-      serviceAccount: REPLACE_BRANCH_NAME
-      serviceAccountName: REPLACE_BRANCH_NAME
       securityContext:
         runAsUser: 1000
         fsGroup: 1000  
       """
+
+Map props = [
+//    allowExternalAgents: false, //boolean
+//    clusterEndpointId: "default", //String
+//    cpus: 1.0, //Double
+      disk: 30, //Integer //
+//    domain: "test-custom-domain-1", //String
+//    envVars: "", //String
+      fsGroup: "1000", //String
+//    image: "custom-image-name", //String -- set this up in Operations Center Docker Image configuration
+      javaOptions: "-XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Djenkins.install.runSetupWizard=false", //String
+//    jenkinsOptions:"", //String
+//    kubernetesInternalDomain: "cluster.local", //String
+//    livenessInitialDelaySeconds: 300, //Integer
+//    livenessPeriodSeconds: 10, //Integer
+//    livenessTimeoutSeconds: 10, //Integer
+      memory: 3060, //Integer
+      namespace: "REPLACE_BRANCH_NAME", //String
+//    ratio: 0.7, //Double
+      storageClassName: "ssd", //String
+//    terminationGracePeriodSeconds: 1200, //Integer
+      yaml: newYaml
 ]
 
 def configuration = new KubernetesMasterProvisioning()
@@ -93,19 +87,37 @@ props.each { key, value ->
     configuration."$key" = value
 }
 
-def j = Jenkins.instance
-def mmFolder = j.getItemByFullName("managed-masters")
-ManagedMaster master = mmFolder.createProject(ManagedMaster.class, masterName)
+if(OperationsCenter.getInstance().getConnectedMasters().any { it?.getName()==masterName }) {
+    println "Master with this name already exists. Performing update."
+    def mm = OperationsCenter
+       .getInstance()
+       .getConnectedMasters()
+       .find { it.name==masterName }
+    def mmConfig = mm.configuration
+    if(mmConfig.yaml != newYaml) {
+        mmConfig.yaml = newYaml
+        // mmConfig provides a lot of configuration options.
+        mm.configuration = mmConfig
+        mm.save()
+        println("Saved configuration. Restarting master.")
+        mm.restartAction(false) // the false here causes a graceful shutdown. Specifying true would force the termination of the pod.
+        sleep 400
+    }
+} else {
+    def j = Jenkins.instance
+    def mmFolder = j.getItemByFullName("managed-masters")
+    ManagedMaster master = mmFolder.createProject(ManagedMaster.class, masterName)
 
-println "Set config..."
-master.setConfiguration(configuration)
-master.properties.replace(new ConnectedMasterLicenseServerProperty(null))
+    println "Set config..."
+    master.setConfiguration(configuration)
+    master.properties.replace(new ConnectedMasterLicenseServerProperty(null))
 
-println "Save..."
-master.save()
+    println "Save..."
+    master.save()
 
-println "Run onModified..."
-master.onModified()
+    println "Run onModified..."
+    master.onModified()
 
-println "Provision and start..."
-master.provisionAndStartAction();
+    println "Provision and start..."
+    master.provisionAndStartAction();
+}
