@@ -75,7 +75,7 @@ Map props = [
 //    livenessPeriodSeconds: 10, //Integer
 //    livenessTimeoutSeconds: 10, //Integer
       memory: 3060, //Integer
-      namespace: "REPLACE_BRANCH_NAME", //String
+      namespace: "core-demo", //String
 //    ratio: 0.7, //Double
       storageClassName: "ssd", //String
 //    terminationGracePeriodSeconds: 1200, //Integer
