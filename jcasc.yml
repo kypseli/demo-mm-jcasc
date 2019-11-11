@@ -12,6 +12,7 @@ jenkins:
     rawHtml:
       disableSyntaxHighlighting: true
   numExecutors: 0
+  quietPeriod: 0
 unclassified:
   githubpluginconfig:
     configs:
