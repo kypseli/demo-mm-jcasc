@@ -27,8 +27,7 @@ pipeline {
         }
       }
     }
-  }
-  stage('Update Managed Master from Groovy') {
+    stage('Update Managed Master from Groovy') {
       steps {
         echo "preparing Jenkins CLI to update ${BRANCH_NAME}"
         sh 'curl -O http://cjoc/cjoc/jnlpJars/jenkins-cli.jar'
@@ -40,5 +39,6 @@ pipeline {
           """
         }
       }
-    }    
+    }
+  }    
 }
