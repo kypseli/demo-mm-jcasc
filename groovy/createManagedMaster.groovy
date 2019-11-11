@@ -105,8 +105,7 @@ if(OperationsCenter.getInstance().getConnectedMasters().any { it?.getName()==mas
     }
 } else {
     def j = Jenkins.instance
-    def mmFolder = j.getItemByFullName("managed-masters")
-    ManagedMaster master = mmFolder.createProject(ManagedMaster.class, masterName)
+    ManagedMaster master = j.createProject(ManagedMaster.class, masterName)
 
     println "Set config..."
     master.setConfiguration(configuration)
