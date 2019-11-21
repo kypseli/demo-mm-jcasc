@@ -62,6 +62,7 @@ jenkins:
                 runAsUser: 1000
             securityContext:
               runAsUser: 1000
+            serviceAccountName: cloud-run-sa
         yamlMergeStrategy: "merge"
         yamls:
         - |-
@@ -84,6 +85,7 @@ jenkins:
                 runAsUser: 1000
             securityContext:
               runAsUser: 1000
+            serviceAccountName: cloud-run-sa
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: false
