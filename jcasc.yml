@@ -32,6 +32,12 @@ unclassified:
               credentialsId: "cbdays-github-token"
               repoOwner: "cloudbees-days"
               repository: "pipeline-library"
+  hibernationConfiguration:
+    activities:
+    - "build"
+    - "web"
+    enabled: true
+    gracePeriod: 10800
 kube:
   podTemplatesConfiguration:
     templates:
