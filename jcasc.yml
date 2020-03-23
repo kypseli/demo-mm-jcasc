@@ -26,13 +26,11 @@ jenkins:
   - kubernetes:
       connectTimeout: 5
       containerCapStr: "10"
-      credentialsId: k8s-sa-core-demo-jenkins
       defaultsProviderTemplate: default-jnlp
       maxRequestsPerHostStr: "32"
       name: kubernetes
-      namespace: core-demo
+      namespace: core-workshop
       readTimeout: 15
-      serverCertificate: ${core-workshop-cert}
       templates:
       - containers:
         - args: /var/jenkins_config/jenkins-agent
